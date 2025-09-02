@@ -39,14 +39,3 @@ std::vector<std::vector<std::string>> generateNaive(cv::Mat img, int asciiWidth,
 
     return naiveAscii;
 }
-
-void naiveTerm(cv::Mat img, bool useColor) {
-    std::vector<std::vector<std::string>> naiveAscii = generateNaive(img, 8, useColor);
-
-    for (const auto& row : naiveAscii) {
-        for (const auto& pixel : row) {
-            std::cout << pixel;
-        }
-        std::cout << "\033[0m" << std::endl;
-    }
-}
