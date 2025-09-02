@@ -9,7 +9,9 @@ int main() {
         return 1;
     };
 
-    naive(img);
+    bool useColor = true;
+
+    edge(img);
 
     return 0;
 }

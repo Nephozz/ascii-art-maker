@@ -11,7 +11,7 @@ char angleToAscii(float angle) {
 void edge(cv::Mat img) {
     cv::Mat blur1, blur2;
     double sigma1 = 1.0;
-    double sigma2 = 4.0;
+    double sigma2 = 3.0;
 
     cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
 
@@ -33,9 +33,13 @@ void edge(cv::Mat img) {
     for (int y = 0; y < img.rows; y++) {
         for (int x = 0; x < img.cols; x++) {
             float mag = magnitude.at<float>(y,x);
-            char c = (mag > 50) ? angleToAscii(angle.at<float>(y,x)) : ' ';
+            char c = (mag > 80) ? angleToAscii(angle.at<float>(y,x)) : ' ';
 
-            std::cout << c;
+            if (c == '-') {
+                std::cout << c << c;
+            } else {
+                std::cout << c << " ";
+            }
         }
         std::cout << "\033[0m" << std::endl;
     }

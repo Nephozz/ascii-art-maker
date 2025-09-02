@@ -9,6 +9,6 @@ char luminanceToAscii(uchar pixelValue);
 
 std::string rgbToAnsi(int r, int g, int b);
 
-void naive(cv::Mat img);
+void naive(cv::Mat img, bool useColor);
 
 #endif
