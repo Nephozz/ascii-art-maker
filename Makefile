@@ -1,5 +1,6 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Wpedantic -g -MMD -MP
+CC = g++
+CFLAGS = -Wall -Wextra -Wpedantic -g -MMD -MP $(shell pkg-config --cflags opencv4)
+LDFLAGS = $(shell pkg-config --libs opencv4)
 
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=.o)
@@ -17,14 +18,12 @@ run: all
 	./$(BIN)/ascii-viewer
 
 ascii-viewer: $(OBJ)
-	$(CC) -o $(BIN)/ascii-viewer $^
+	$(CC) -o $(BIN)/ascii-viewer $^ $(LDFLAGS)
 
-%.o: %.c
+%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@echo "Deleting files and directories..."
 	rm -f $(BIN)/ascii-viewer $(OBJ) $(DEP)
-	@echo "Cleanup complete."
 
 -include $(DEP)
