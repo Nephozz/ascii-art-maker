@@ -16,7 +16,7 @@ dirs:
 	mkdir -p $(BIN)
 
 run: all
-	./$(BIN)/ascii-viewer
+	./$(BIN)/ascii-viewer $(ARGS)
 
 ascii-viewer: $(OBJ)
 	$(CC) -o $(BIN)/ascii-viewer $^ $(LDFLAGS)

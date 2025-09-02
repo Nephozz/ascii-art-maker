@@ -9,10 +9,10 @@ std::string rgbToAnsi(int r, int g, int b) {
     return "\033[38;2;" + std::to_string(r) + ";" + std::to_string(g) + ";" + std::to_string(b) + "m";
 }
 
-std::vector<std::vector<std::string>> generateNaive(cv::Mat img, bool useColor) {
+std::vector<std::vector<std::string>> generateNaive(cv::Mat img, int asciiWidth, bool useColor) {
     std::vector<std::vector<std::string>> naiveAscii;
 
-    cv::resize(img, img, cv::Size(img.cols / ASCII_WIDTH, img.rows / ASCII_WIDTH), 0, 0, cv::INTER_AREA);
+    cv::resize(img, img, cv::Size(img.cols / asciiWidth, img.rows / asciiWidth), 0, 0, cv::INTER_AREA);
 
     cv::Mat imgGray;
     cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
@@ -41,7 +41,7 @@ std::vector<std::vector<std::string>> generateNaive(cv::Mat img, bool useColor) 
 }
 
 void naiveTerm(cv::Mat img, bool useColor) {
-    std::vector<std::vector<std::string>> naiveAscii = generateNaive(img, useColor);
+    std::vector<std::vector<std::string>> naiveAscii = generateNaive(img, 8, useColor);
 
     for (const auto& row : naiveAscii) {
         for (const auto& pixel : row) {

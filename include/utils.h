@@ -6,6 +6,4 @@
 #include <string>
 #include <vector>
 
-#define ASCII_WIDTH 8
-
 #endif

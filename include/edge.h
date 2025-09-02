@@ -5,6 +5,6 @@
 
 void edgeTerm(cv::Mat img);
 
-std::vector<std::vector<char>> generateEdge(cv::Mat img);
+std::vector<std::vector<char>> generateEdge(cv::Mat img, int asciiWidth);
 
 #endif

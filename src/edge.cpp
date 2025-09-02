@@ -8,12 +8,12 @@ char angleToAscii(float angle) {
     return '\\';
 }
 
-std::vector<std::vector<char>> generateEdge(cv::Mat img) {
+std::vector<std::vector<char>> generateEdge(cv::Mat img, int asciiWidth) {
     std::vector<std::vector<char>> edgeAscii;
 
     cv::Mat blur1, blur2;
     double sigma1 = 1.0;
-    double sigma2 = 3.0;
+    double sigma2 = 4.0;
 
     cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
 
@@ -28,15 +28,15 @@ std::vector<std::vector<char>> generateEdge(cv::Mat img) {
     cv::Mat magnitude, angle;
     cv::cartToPolar(gradX, gradY, magnitude, angle, true);
 
-    cv::resize(img, img, cv::Size(img.cols / ASCII_WIDTH, img.rows / ASCII_WIDTH), 0, 0, cv::INTER_AREA);
-    cv::resize(magnitude, magnitude, img.size());
-    cv::resize(angle, angle, img.size());
+    cv::resize(img, img, cv::Size(img.cols / asciiWidth, img.rows / asciiWidth), 0, 0, cv::INTER_NEAREST);
+    cv::resize(magnitude, magnitude, img.size(), 0, 0, cv::INTER_NEAREST);
+    cv::resize(angle, angle, img.size(), 0, 0, cv::INTER_NEAREST);
 
     for (int y = 0; y < img.rows; y++) {
         std::vector<char> row;
         for (int x = 0; x < img.cols; x++) {
             float mag = magnitude.at<float>(y,x);
-            char c = (mag > 80) ? angleToAscii(angle.at<float>(y,x)) : ' ';
+            char c = (mag > 50) ? angleToAscii(angle.at<float>(y,x)) : ' ';
             row.push_back(c);
         }
         edgeAscii.push_back(row);
@@ -45,7 +45,7 @@ std::vector<std::vector<char>> generateEdge(cv::Mat img) {
 }
 
 void edgeTerm(cv::Mat img) {
-    std::vector<std::vector<char>> edgeAscii = generateEdge(img);
+    std::vector<std::vector<char>> edgeAscii = generateEdge(img, 8);
 
     for (int y = 0; y < edgeAscii.size(); y++) {
         for (int x = 0; x < edgeAscii[y].size(); x++) {
