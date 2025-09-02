@@ -26,7 +26,7 @@ void downscaleEdges(const cv::Mat& magFull, const cv::Mat& angleFull,
     int blockW = magFull.cols / asciiWidth;
     int blockH = magFull.rows / asciiHeight;
 
-    int minPixel = static_cast<int>(0.2 * asciiHeight * asciiWidth);
+    int minPixel = static_cast<int>(0.2 * asciiHeight * asciiWidth) + 1;
 
     magSmall.create(blockH, blockW, CV_32F);
     angleSmall.create(blockH, blockW, CV_8U);
@@ -77,20 +77,19 @@ std::vector<std::vector<char>> generateEdge(cv::Mat img, int asciiWidth) {
 
     cv::Mat blur1, blur2;
     double sigma, k;
-    sigma = 1.0;
-    k = 3.0;
+    sigma = 0.25;
+    k = 1.2;
 
     cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
 
     cv::GaussianBlur(img, blur1, cv::Size(0, 0), sigma);
     cv::GaussianBlur(img, blur2, cv::Size(0, 0), k * sigma);
-    cv::Mat dog = blur1 - blur2;
 
-    double dogThreshold = 15.0;
-    cv::threshold(dog, dog, dogThreshold, 255, cv::THRESH_TOZERO);
+    double tau = 15.0;
+    cv::Mat dog = (1 + tau) * blur1 - tau * blur2;
 
-    cv::imshow("DoG", dog);
-    cv::waitKey(0);
+    double dogThreshold = 50.0;
+    cv::threshold(dog, dog, dogThreshold, 255, cv::THRESH_BINARY);
 
     cv::Mat gradX, gradY, sobel;
     cv::Sobel(dog, gradX, CV_32F, 1, 0, 3);
@@ -106,7 +105,7 @@ std::vector<std::vector<char>> generateEdge(cv::Mat img, int asciiWidth) {
         std::vector<char> row;
         for (int x = 0; x < magSmall.cols; x++) {
             float mag = magSmall.at<float>(y,x);
-            char c = (mag > 10) ? angleToAscii(angleSmall.at<uchar>(y,x)) : ' ';
+            char c = (mag > 0) ? angleToAscii(angleSmall.at<uchar>(y,x)) : ' ';
             row.push_back(c);
         }
         edgeAscii.push_back(row);

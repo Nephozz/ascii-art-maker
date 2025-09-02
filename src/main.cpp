@@ -3,7 +3,7 @@
 #include "edge.h"
 
 int main(int argc, char** argv) {
-    int asciiWidth = 8;
+    int asciiWidth = 4;
     bool useColor = true;
     if (argc > 1) {
         asciiWidth = std::stoi(argv[1]);
