@@ -1,5 +1,6 @@
 CC = g++
 CFLAGS = -Wall -Wextra -Wpedantic -g -MMD -MP $(shell pkg-config --cflags opencv4)
+CFLAGS += -Iinclude
 LDFLAGS = $(shell pkg-config --libs opencv4)
 
 SRC = $(wildcard src/*.c)
