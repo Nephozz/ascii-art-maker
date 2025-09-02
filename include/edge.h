@@ -3,6 +3,8 @@
 
 #include "utils.h"
 
-void edge(cv::Mat img);
+void edgeTerm(cv::Mat img);
+
+std::vector<std::vector<char>> generateEdge(cv::Mat img);
 
 #endif

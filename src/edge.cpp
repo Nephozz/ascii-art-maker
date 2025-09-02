@@ -8,7 +8,9 @@ char angleToAscii(float angle) {
     return '\\';
 }
 
-void edge(cv::Mat img) {
+std::vector<std::vector<char>> generateEdge(cv::Mat img) {
+    std::vector<std::vector<char>> edgeAscii;
+
     cv::Mat blur1, blur2;
     double sigma1 = 1.0;
     double sigma2 = 3.0;
@@ -31,10 +33,23 @@ void edge(cv::Mat img) {
     cv::resize(angle, angle, img.size());
 
     for (int y = 0; y < img.rows; y++) {
+        std::vector<char> row;
         for (int x = 0; x < img.cols; x++) {
             float mag = magnitude.at<float>(y,x);
             char c = (mag > 80) ? angleToAscii(angle.at<float>(y,x)) : ' ';
+            row.push_back(c);
+        }
+        edgeAscii.push_back(row);
+    }
+    return edgeAscii;
+}
 
+void edgeTerm(cv::Mat img) {
+    std::vector<std::vector<char>> edgeAscii = generateEdge(img);
+
+    for (int y = 0; y < edgeAscii.size(); y++) {
+        for (int x = 0; x < edgeAscii[y].size(); x++) {
+            char c = edgeAscii[y][x];
             if (c == '-') {
                 std::cout << c << c;
             } else {

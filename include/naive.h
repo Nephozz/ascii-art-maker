@@ -5,10 +5,8 @@
 
 const std::string ASCII_CHARS = " .:-=+*#%@";
 
-char luminanceToAscii(uchar pixelValue);
+void naiveTerm(cv::Mat img, bool useColor);
 
-std::string rgbToAnsi(int r, int g, int b);
-
-void naive(cv::Mat img, bool useColor);
+std::vector<std::vector<std::string>> generateNaive(cv::Mat img, bool useColor);
 
 #endif
