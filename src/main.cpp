@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
             if (e != ' ') {
                 std::cout << "\033[0m";
                 if (e == '-') std::cout << e << e;
-                else std::cout << e << " ";
+                else std::cout << e << naiveAscii[y][x];
             } else {
                 std::cout << naiveAscii[y][x];
             }
